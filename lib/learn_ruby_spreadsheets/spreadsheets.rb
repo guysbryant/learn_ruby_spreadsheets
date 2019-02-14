@@ -1,0 +1,2 @@
+class LearnRubySpreadsheets::SpreadSheets
+end
