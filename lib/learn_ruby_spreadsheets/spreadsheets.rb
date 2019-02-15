@@ -13,6 +13,9 @@
     work_sheet[0][0]
 
     cell_value = cell1.value
+
+    row.cells returns array-like object of all cells
+    row.cells.each lets me itterate over all the cells to pull out values
 =end
     
 class LearnRubySpreadsheets::SpreadSheets
