@@ -15,7 +15,6 @@
     cell_value = cell1.value
 =end
     
-end
 class LearnRubySpreadsheets::SpreadSheets
 
     def initialize
