@@ -16,6 +16,10 @@
 
     row.cells returns array-like object of all cells
     row.cells.each lets me itterate over all the cells to pull out values
+
+    worksheet.each iterates over all rows starting from the first
+    worksheet.reverse_each iterates over all rows starting from the last
+        the rows are still read from left to right
 =end
     
 class LearnRubySpreadsheets::SpreadSheets
