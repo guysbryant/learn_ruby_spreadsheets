@@ -14,13 +14,13 @@
 
     cell_value = cell1.value
 =end
-rescue => exception
     
 end
 class LearnRubySpreadsheets::SpreadSheets
 
     def initialize
         workbook = RubyXL::Parser.parse("data/first_test_spreadsheet_data.xlsx")
+        worksheet = workbook[0]
         binding.pry
     end
 end
