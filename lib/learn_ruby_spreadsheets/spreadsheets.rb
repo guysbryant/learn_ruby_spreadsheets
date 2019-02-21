@@ -38,6 +38,11 @@ class LearnRubySpreadsheets::SpreadSheets
         cylinderSheet = cylinderBook[0]
         qty = 3
         serial = 19
+        line = 20
+        assy_initials = 21
+        quality_initials = 22
+        stake_and_seal = 23
+         
         binding.pry
     end
 end
