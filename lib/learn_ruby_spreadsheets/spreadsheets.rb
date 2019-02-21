@@ -23,6 +23,10 @@
     worksheet.each iterates over all rows starting from the first
     worksheet.reverse_each iterates over all rows starting from the last
         the rows are still read from left to right
+
+    cyinderSheet.each do |row| This will print out the qty of each row if it has a qty and a serial, otherwise the row is skipped
+        puts row[qty].value if row && row[qty] && row[serial].value  
+    end
 =end
     
 class LearnRubySpreadsheets::SpreadSheets
@@ -33,6 +37,7 @@ class LearnRubySpreadsheets::SpreadSheets
         cylinderBook = RubyXL::Parser.parse("data/Scrubbed Data.xlsx")
         cylinderSheet = cylinderBook[0]
         qty = 3
+        serial = 19
         binding.pry
     end
 end
