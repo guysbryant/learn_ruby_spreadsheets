@@ -36,13 +36,17 @@ class LearnRubySpreadsheets::SpreadSheets
         worksheet = workbook[0]
         cylinderBook = RubyXL::Parser.parse("data/Scrubbed Data.xlsx")
         cylinderSheet = cylinderBook[0]
+
         qty = 3
         serial = 19
         line = 20
         assy_initials = 21
         quality_initials = 22
         stake_and_seal = 23
-         
+
+        customer_or_total = 4
+        po_or_averageunit = 6
+        
         binding.pry
     end
 end
