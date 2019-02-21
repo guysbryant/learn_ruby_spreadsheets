@@ -14,7 +14,7 @@
     work_sheet[0][0]
 
     cell_value = cell1.value to read the cell value
-    cell_value.change_contents("new value") to change the cell value
+    cell_value.change_contents("new value") to change the cell value the quotes insert data as string, leave off for int
     cell_value.change_contents("new value", cell_value.formula) to preserve the formula
 
     row.cells returns array-like object of all cells
