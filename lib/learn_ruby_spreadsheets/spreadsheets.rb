@@ -30,6 +30,9 @@ class LearnRubySpreadsheets::SpreadSheets
     def initialize
         workbook = RubyXL::Parser.parse("data/first_test_spreadsheet_data.xlsx")
         worksheet = workbook[0]
+        cylinderBook = RubyXL::Parser.parse("data/Scrubbed Data.xlsx")
+        cylinderSheet = cylinderBook[0]
+        qty = 3
         binding.pry
     end
 end
