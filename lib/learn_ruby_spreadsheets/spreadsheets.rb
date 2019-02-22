@@ -69,7 +69,7 @@ class LearnRubySpreadsheets::SpreadSheets
 
         target_row = last_row_with_data.r 
         cylinderSheet[target_row].cells.each.with_index do |cell, index|
-            cell.change_contents(last_row_with_data[index].value)
+            cell.change_contents(total_row[index].value)
         end
 
         binding.pry
