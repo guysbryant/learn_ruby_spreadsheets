@@ -27,6 +27,11 @@
     cyinderSheet.each do |row| This will print out the qty of each row if it has a qty and a serial, otherwise the row is skipped
         puts row[qty].value if row && row[qty] && row[serial].value  
     end
+
+    target_row = last_row_with_data.r + 1 This will let me target a specific row
+        cylinderSheet[target_row].cells.each.with_index do |cell, index| This will let me copy the values from each cell one row into the cells of another row
+            cell.change_contents(last_row_with_data[index].value)
+        end
 =end
     
 class LearnRubySpreadsheets::SpreadSheets
@@ -58,6 +63,11 @@ class LearnRubySpreadsheets::SpreadSheets
                 total_row = row if total_row == nil
             end
             break if total_row != nil && last_row_with_data != nil
+        end
+
+        target_row = last_row_with_data.r + 1
+        cylinderSheet[target_row].cells.each.with_index do |cell, index|
+            cell.change_contents(last_row_with_data[index].value)
         end
 
         binding.pry
