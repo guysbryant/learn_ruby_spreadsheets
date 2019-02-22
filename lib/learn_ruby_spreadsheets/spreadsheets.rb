@@ -28,7 +28,9 @@
         puts row[qty].value if row && row[qty] && row[serial].value  
     end
 
-    target_row = last_row_with_data.r + 1 This will let me target a specific row
+    .r Gives the actual row which are numbered starting from 1
+    cylinderSheet[index] is how I manipulate rows and it is numbered starting from 0
+    target_row = last_row_with_data.r This will let me target a specific row
         cylinderSheet[target_row].cells.each.with_index do |cell, index| This will let me copy the values from each cell one row into the cells of another row
             cell.change_contents(last_row_with_data[index].value)
         end
@@ -65,7 +67,7 @@ class LearnRubySpreadsheets::SpreadSheets
             break if total_row != nil && last_row_with_data != nil
         end
 
-        target_row = last_row_with_data.r + 1
+        target_row = last_row_with_data.r 
         cylinderSheet[target_row].cells.each.with_index do |cell, index|
             cell.change_contents(last_row_with_data[index].value)
         end
