@@ -43,6 +43,7 @@ class LearnRubySpreadsheets::SpreadSheets
         worksheet = workbook[0]
         cylinderBook = RubyXL::Parser.parse("data/Scrubbed Data.xlsx")
         cylinderSheet = cylinderBook[0]
+        row_size = cylinderSheet[1].size
 
         qty = 3
         serial = 19
@@ -71,6 +72,13 @@ class LearnRubySpreadsheets::SpreadSheets
         cylinderSheet[target_row].cells.each.with_index do |cell, index|
             cell.change_contents(total_row[index].value)
         end
+        blank_row = target_row + 1
+        cylinderSheet[blank_row].cells.each.with_index do |cell, index|
+            cell.change_contents(cylinderSheet[total_row.r][index].value)
+            cell.change_fill("000000") if index > 2 && index < row_size - 1
+        end
+
+    cylinderBook.write("data/test.xlsx")
 
         binding.pry
     end
