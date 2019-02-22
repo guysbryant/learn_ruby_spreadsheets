@@ -87,8 +87,10 @@ class LearnRubySpreadsheets::SpreadSheets
             cell.change_fill("000000") if index > 2 && index < row_size - 1
         end
 
+
+        
     
-    cylinderBook.write("data/test.xlsx")
+        cylinderBook.write("data/test.xlsx")
 
         binding.pry
     end
