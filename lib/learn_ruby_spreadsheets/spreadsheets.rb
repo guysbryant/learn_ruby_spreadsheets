@@ -16,6 +16,15 @@
     cell_value = cell1.value to read the cell value
     cell_value.change_contents("new value") to change the cell value the quotes insert data as string, leave off for int
     cell_value.change_contents("new value", cell_value.formula) to preserve the formula
+    cylinderSheet[target_row][5].change_contents("", "SUM(2+2)") Creates a blank cell (this could be replaced with real data), and adds the formula
+            I can't seem to get the formula to evaluate for the value of the cell for some reason 
+            My solution is to:
+            - use Ruby to evaluate the same data that the formula is meant to evaluate
+            - pass that data in as the first argument of .change_contents
+            - pass the excel formula as the second argument
+            This will ensure that the cell value is the same as what the formula would evaluate to while allowing for the formula to
+            be copied and pasted directly in the spreadsheet should action be performed.
+            
 
     row.cells returns array-like object of all cells
     row.cells.each lets me itterate over all the cells to pull out values
@@ -78,6 +87,7 @@ class LearnRubySpreadsheets::SpreadSheets
             cell.change_fill("000000") if index > 2 && index < row_size - 1
         end
 
+    
     cylinderBook.write("data/test.xlsx")
 
         binding.pry
