@@ -46,7 +46,20 @@ class LearnRubySpreadsheets::SpreadSheets
 
         customer_or_total = 4
         po_or_averageunit = 6
-        
+
+        total_row = nil
+        last_row_with_data = nil
+
+        cylinderSheet.reverse_each do |row|
+            if row && row[qty] && row[qty].value
+                last_row_with_data = row if last_row_with_data == nil
+            end
+            if row[customer_or_total].value == "TOTAL #"
+                total_row = row if total_row == nil
+            end
+            break if total_row != nil && last_row_with_data != nil
+        end
+
         binding.pry
     end
 end
