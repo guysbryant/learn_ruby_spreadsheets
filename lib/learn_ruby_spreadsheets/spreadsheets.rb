@@ -33,8 +33,8 @@
     worksheet.reverse_each iterates over all rows starting from the last
         the rows are still read from left to right
 
-    cylinderSheet.each do |row| This will print out the qty of each row if it has a qty and a serial, otherwise the row is skipped
-        puts row[qty].value if row && row[qty] && row[serial].value  
+    cylinderSheet.each do |row| This will print out the qty of each row if it has a qty and a line, otherwise the row is skipped
+        puts row[qty].value if row && row[qty] && row[line].value  
     end
 
     .r Gives the actual row which are numbered starting from 1
@@ -54,16 +54,27 @@ class LearnRubySpreadsheets::SpreadSheets
         cylinderSheet = cylinderBook[0]
         row_size = cylinderSheet[1].size
 
-        #Relevant Columns
+        #Column Identities
+        workorder_total_value_a = 1
+        workorder_total_cylinders_a = 2
         qty = 3
-        serial = 19
+        customer_or_total = 4
+        po_or_averageunit = 6
+        sales_employee = 9
+        unity_price = 10
+        line_price_or_wordorder_total_value_b = 11 #unit price * qty
+        model_or_totale_extended = 13
+        date = 15
+        special_modifiers = 17
+        workorder_number = 19
         line = 20
         assy_initials = 21
         quality_initials = 22
         stake_and_seal = 23
+        combined_serial_number = 24
+        notes = 27
+        custom_notes = 28
 
-        customer_or_total = 4
-        po_or_averageunit = 6
 
         #I need to find the last row which contains a cylinder which has not yet been added to a work order
         #and the last row of the previous work order (which will contain the string "TOTAL #")
