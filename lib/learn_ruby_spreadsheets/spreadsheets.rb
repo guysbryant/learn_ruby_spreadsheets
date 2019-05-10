@@ -33,7 +33,7 @@
     worksheet.reverse_each iterates over all rows starting from the last
         the rows are still read from left to right
 
-    cyinderSheet.each do |row| This will print out the qty of each row if it has a qty and a serial, otherwise the row is skipped
+    cylinderSheet.each do |row| This will print out the qty of each row if it has a qty and a serial, otherwise the row is skipped
         puts row[qty].value if row && row[qty] && row[serial].value  
     end
 
@@ -54,6 +54,7 @@ class LearnRubySpreadsheets::SpreadSheets
         cylinderSheet = cylinderBook[0]
         row_size = cylinderSheet[1].size
 
+        #Relevant Columns
         qty = 3
         serial = 19
         line = 20
@@ -64,6 +65,8 @@ class LearnRubySpreadsheets::SpreadSheets
         customer_or_total = 4
         po_or_averageunit = 6
 
+        #I need to find the last row which contains a cylinder which has not yet been added to a work order
+        #and the last row of the previous work order (which will contain the string "TOTAL #")
         total_row = nil
         last_row_with_data = nil
 
@@ -77,6 +80,8 @@ class LearnRubySpreadsheets::SpreadSheets
             break if total_row != nil && last_row_with_data != nil
         end
 
+        #I need to target the row after the last row containing data to add the new total row
+        #and black separator line for the new work order
         target_row = last_row_with_data.r 
         cylinderSheet[target_row].cells.each.with_index do |cell, index|
             cell.change_contents(total_row[index].value)
@@ -90,6 +95,8 @@ class LearnRubySpreadsheets::SpreadSheets
 
         
     
+        #Save what I've done to a new spreadsheet called test
+        #This is to preserve the original for continued testing
         cylinderBook.write("data/test.xlsx")
 
         binding.pry
