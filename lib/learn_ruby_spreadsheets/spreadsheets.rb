@@ -92,6 +92,12 @@ class LearnRubySpreadsheets::SpreadSheets
             cell.change_fill("000000") if index > 2 && index < row_size - 1
         end
 
+        #Add the total number of cylinders to the new work order and add the formula to the cell too
+        total_workorder_cylinders = 0
+        cylinderSheet.each do |row|
+            total_workorder_cylinders += row[qty].value if row.r > total_row.r + 1 && row.r <= target_row
+        end
+        cylinderSheet[target_row][qty].change_contents(total_workorder_cylinders, "SUM(D#{total_row.r + 2}:D#{target_row})")
 
 
         
