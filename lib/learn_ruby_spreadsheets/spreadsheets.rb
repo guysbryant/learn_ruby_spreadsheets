@@ -84,7 +84,7 @@ class LearnRubySpreadsheets::SpreadSheets
         #and black separator line for the new work order
         target_row = last_row_with_data.r 
         cylinderSheet[target_row].cells.each.with_index do |cell, index|
-            cell.change_contents(total_row[index].value)
+            cell.change_contents(total_row[index].value) if index != qty && index != 10
         end
         blank_row = target_row + 1
         cylinderSheet[blank_row].cells.each.with_index do |cell, index|
@@ -93,12 +93,13 @@ class LearnRubySpreadsheets::SpreadSheets
         end
 
 
+
         
     
         #Save what I've done to a new spreadsheet called test
         #This is to preserve the original for continued testing
         cylinderBook.write("data/test.xlsx")
 
-        binding.pry
+        # binding.pry
     end
 end
