@@ -62,8 +62,8 @@ class LearnRubySpreadsheets::SpreadSheets
         po_or_averageunit = 6
         sales_employee = 9
         unit_price = 10
-        line_price_or_wordorder_total_value_b = 11 #unit price * qty
-        model_or_totale_extended = 13
+        line_price_or_workorder_total_value_b = 11 #unit price * qty
+        model_or_total_extended = 13
         date = 15
         special_modifiers = 17
         workorder_number = 19
@@ -123,6 +123,27 @@ class LearnRubySpreadsheets::SpreadSheets
         #This is to preserve the original for continued testing
         cylinderBook.write("data/test.xlsx")
 
-        # binding.pry
+        #New Plan
+        # Find the last line with a work order number
+        # Find the line of the last cylinder not on a work order
+        # Sort all the lines (from +2 after last line with a work order number to last of last cylinder not on a work order) by date
+        # Start at +2 of last line with a work order number and begin tallying lines and cylinder qty per line until
+        #   15 lines, 20 cylinders, or the last line with a qty is reached 
+        #   Insert the total line and black line to use these lines as a work order
+        # Sort all lines in the work order by model number
+        # Insert a number of new lines equal to the number of lines in the work order
+        # Check if a work order has been generated today
+        #   If one has then use the same work order number and either A or ending letter +1
+        #   If not then generate a work order based on today's date
+        # Use the model numbers to generate line numbers and U.S values
+        # Display the work order to the user for verification and changes
+        # Save the entire spreadsheet
+        # Copy the contents of the work order to a new spreadsheet 
+        # Save the new spreadsheet giving it the file name of the work order number plus the string Master
+        # Open the new work order Master sheet for the user
+        # Close the cylinders spreadsheet
+        # Open the appropriate work order generation spreadsheet for the work order standard
+        # Generate a work order this will encompass many many more steps that I will begin considering after I accomplish all of the above
+        #   Just getting this far will help out quite a bit though
     end
 end
