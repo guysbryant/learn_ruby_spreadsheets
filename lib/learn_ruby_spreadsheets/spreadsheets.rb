@@ -61,7 +61,7 @@ class LearnRubySpreadsheets::SpreadSheets
         customer_or_total = 4
         po_or_averageunit = 6
         sales_employee = 9
-        unity_price = 10
+        unit_price = 10
         line_price_or_wordorder_total_value_b = 11 #unit price * qty
         model_or_totale_extended = 13
         date = 15
