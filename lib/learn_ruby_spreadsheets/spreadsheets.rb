@@ -75,6 +75,7 @@ class LearnRubySpreadsheets::SpreadSheets
         notes = 27
         custom_notes = 28
 
+        # new_empty_row = [cylinderSheet]
 
         #I need to find the last row which contains a cylinder which has not yet been added to a work order
         #and the last row of the previous work order (which will contain the string "TOTAL #")
@@ -110,7 +111,12 @@ class LearnRubySpreadsheets::SpreadSheets
         end
         cylinderSheet[target_row][qty].change_contents(total_workorder_cylinders, "SUM(D#{total_row.r + 2}:D#{target_row})")
 
-
+        #Add a new blank row to the bottom of the spreadsheet
+        last_row = cylinderSheet.sheet_data[-1].r
+        cylinderSheet.insert_row(last_row)
+        cylinderSheet[last_row + 1].cells.each.with_index do |cell, index|
+            cell.change_contents(cylinderSheet[last_row][index].value, cell_value.formula)
+        end
         
     
         #Save what I've done to a new spreadsheet called test
