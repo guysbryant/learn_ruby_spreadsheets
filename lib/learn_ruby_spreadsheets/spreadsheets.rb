@@ -48,8 +48,8 @@
 class LearnRubySpreadsheets::SpreadSheets
 
     def initialize
-        workbook = RubyXL::Parser.parse("data/first_test_spreadsheet_data.xlsx")
-        worksheet = workbook[0]
+        # workbook = RubyXL::Parser.parse("data/first_test_spreadsheet_data.xlsx")
+        # worksheet = workbook[0]
         cylinderBook = RubyXL::Parser.parse("data/Scrubbed Data.xlsx")
         cylinderSheet = cylinderBook[0]
         row_size = cylinderSheet[1].size
@@ -75,54 +75,6 @@ class LearnRubySpreadsheets::SpreadSheets
         notes = 27
         custom_notes = 28
 
-        # new_empty_row = [cylinderSheet]
-
-        #I need to find the last row which contains a cylinder which has not yet been added to a work order
-        #and the last row of the previous work order (which will contain the string "TOTAL #")
-        total_row = nil
-        last_row_with_data = nil
-
-        cylinderSheet.reverse_each do |row|
-            if row && row[qty] && row[qty].value
-                last_row_with_data = row if last_row_with_data == nil
-            end
-            if row[customer_or_total].value == "TOTAL #"
-                total_row = row if total_row == nil
-            end
-            break if total_row != nil && last_row_with_data != nil
-        end
-
-        #I need to target the row after the last row containing data to add the new total row
-        #and black separator line for the new work order
-        target_row = last_row_with_data.r 
-        cylinderSheet[target_row].cells.each.with_index do |cell, index|
-            cell.change_contents(total_row[index].value) if index != qty && index != 10
-        end
-        blank_row = target_row + 1
-        cylinderSheet[blank_row].cells.each.with_index do |cell, index|
-            cell.change_contents(cylinderSheet[total_row.r][index].value)
-            cell.change_fill("000000") if index > 2 && index < row_size - 1
-        end
-
-        #Add the total number of cylinders to the new work order and add the formula to the cell too
-        total_workorder_cylinders = 0
-        cylinderSheet.each do |row|
-            total_workorder_cylinders += row[qty].value if row.r > total_row.r + 1 && row.r <= target_row
-        end
-        cylinderSheet[target_row][qty].change_contents(total_workorder_cylinders, "SUM(D#{total_row.r + 2}:D#{target_row})")
-
-        #Add a new blank row to the bottom of the spreadsheet
-        last_row = cylinderSheet.sheet_data[-1].r
-        cylinderSheet.insert_row(last_row)
-        cylinderSheet[last_row + 1].cells.each.with_index do |cell, index|
-            cell.change_contents(cylinderSheet[last_row][index].value, cell_value.formula)
-        end
-        
-    
-        #Save what I've done to a new spreadsheet called test
-        #This is to preserve the original for continued testing
-        cylinderBook.write("data/test.xlsx")
-
         #New Plan
         # Find the last line with a work order number
         # Find the line of the last cylinder not on a work order
@@ -145,5 +97,58 @@ class LearnRubySpreadsheets::SpreadSheets
         # Open the appropriate work order generation spreadsheet for the work order standard
         # Generate a work order this will encompass many many more steps that I will begin considering after I accomplish all of the above
         #   Just getting this far will help out quite a bit though
+
+
+
+
+        # # new_empty_row = [cylinderSheet]
+
+        # #I need to find the last row which contains a cylinder which has not yet been added to a work order
+        # #and the last row of the previous work order (which will contain the string "TOTAL #")
+        # total_row = nil
+        # last_row_with_data = nil
+
+        # cylinderSheet.reverse_each do |row|
+        #     if row && row[qty] && row[qty].value
+        #         last_row_with_data = row if last_row_with_data == nil
+        #     end
+        #     if row[customer_or_total].value == "TOTAL #"
+        #         total_row = row if total_row == nil
+        #     end
+        #     break if total_row != nil && last_row_with_data != nil
+        # end
+
+        # #I need to target the row after the last row containing data to add the new total row
+        # #and black separator line for the new work order
+        # target_row = last_row_with_data.r 
+        # cylinderSheet[target_row].cells.each.with_index do |cell, index|
+        #     cell.change_contents(total_row[index].value) if index != qty && index != 10
+        # end
+        # blank_row = target_row + 1
+        # cylinderSheet[blank_row].cells.each.with_index do |cell, index|
+        #     cell.change_contents(cylinderSheet[total_row.r][index].value)
+        #     cell.change_fill("000000") if index > 2 && index < row_size - 1
+        # end
+
+        # #Add the total number of cylinders to the new work order and add the formula to the cell too
+        # total_workorder_cylinders = 0
+        # cylinderSheet.each do |row|
+        #     total_workorder_cylinders += row[qty].value if row.r > total_row.r + 1 && row.r <= target_row
+        # end
+        # cylinderSheet[target_row][qty].change_contents(total_workorder_cylinders, "SUM(D#{total_row.r + 2}:D#{target_row})")
+
+        #Add a new blank row to the bottom of the spreadsheet
+        # last_row = cylinderSheet.sheet_data[-1].r
+        # cylinderSheet.insert_row(last_row)
+        # cylinderSheet[last_row + 1].cells.each.with_index do |cell, index|
+        #     cell.change_contents(cylinderSheet[last_row][index].value, cell_value.formula)
+        # end
+        
+    
+        #Save what I've done to a new spreadsheet called test
+        #This is to preserve the original for continued testing
+        ######cylinderBook.write("data/test.xlsx")
+
+       
     end
 end
