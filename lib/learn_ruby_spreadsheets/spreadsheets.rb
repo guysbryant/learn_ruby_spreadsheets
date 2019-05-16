@@ -76,8 +76,13 @@ class LearnRubySpreadsheets::SpreadSheets
         custom_notes = 28
 
         #New Plan
-        # Find the last line with a work order number
-        # Find the line of the last cylinder not on a work order
+        # Find all lines with a cylinder and without a work order
+        unnasigned_row_numbers = []
+        cylinderSheet.reverse_each do |row|
+            break if row[workorder_number].value != nil
+            unnasigned_row_numbers << row.r-1 if row[customer_or_total].value != "TOTAL #" && row[qty].value #.r is 1 indexed but the program works with a 0 index
+        end
+        binding.pry
         # Sort all the lines (from +2 after last line with a work order number to last of last cylinder not on a work order) by date
         # Start at +2 of last line with a work order number and begin tallying lines and cylinder qty per line until
         #   15 lines, 20 cylinders, or the last line with a qty is reached 
