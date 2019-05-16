@@ -82,8 +82,18 @@ class LearnRubySpreadsheets::SpreadSheets
             break if row[workorder_number].value != nil
             unnasigned_row_numbers << row.r-1 if row[customer_or_total].value != "TOTAL #" && row[qty].value #.r is 1 indexed but the program works with a 0 index
         end
-        binding.pry
+        grabbed_rows = []
+        cylinderSheet.reverse_each do |row|
+            break if row[workorder_number].value != nil
+            grabbed_rows << row if row[customer_or_total].value != "TOTAL #" && row[qty].value #.r is 1 indexed but the program works with a 0 index
+        end
+
         # Sort all the lines (from +2 after last line with a work order number to last of last cylinder not on a work order) by date
+        grabbed_rows.sort_by {|row| row[model_or_total_extended].value}
+        # This only sorts the rows in my local variable
+        #   I need to delete the rows from the spread sheet now that they have been sorted in my variable
+        #   Then I can copy them back into the spreadsheet but sorted this time
+        binding.pry
         # Start at +2 of last line with a work order number and begin tallying lines and cylinder qty per line until
         #   15 lines, 20 cylinders, or the last line with a qty is reached 
         #   Insert the total line and black line to use these lines as a work order
