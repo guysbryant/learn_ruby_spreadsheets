@@ -1,5 +1,5 @@
-=begin
-    Working with rubyXL
+# =begin
+#     Working with rubyXL
     workbook = RubyXL::Parser.parse("path/to/xlsx")
     workbook.write("path/to/desired/Excel/file.xlsx")
 
@@ -17,14 +17,14 @@
     cell_value.change_contents("new value") to change the cell value the quotes insert data as string, leave off for int
     cell_value.change_contents("new value", cell_value.formula) to preserve the formula
     cylinderSheet[target_row][5].change_contents("", "SUM(2+2)") Creates a blank cell (this could be replaced with real data), and adds the formula
-            I can't seem to get the formula to evaluate for the value of the cell for some reason 
+            I can't seem to get the formula to evaluate for the value of the cell for some reason
             My solution is to:
             - use Ruby to evaluate the same data that the formula is meant to evaluate
             - pass that data in as the first argument of .change_contents
             - pass the excel formula as the second argument
             This will ensure that the cell value is the same as what the formula would evaluate to while allowing for the formula to
             be copied and pasted directly in the spreadsheet should action be performed.
-            
+
 
     row.cells returns array-like object of all cells
     row.cells.each lets me itterate over all the cells to pull out values
@@ -34,7 +34,7 @@
         the rows are still read from left to right
 
     cylinderSheet.each do |row| This will print out the qty of each row if it has a qty and a line, otherwise the row is skipped
-        puts row[qty].value if row && row[qty] && row[line].value  
+        puts row[qty].value if row && row[qty] && row[line].value
     end
 
     .r Gives the actual row which are numbered starting from 1
@@ -44,13 +44,14 @@
             cell.change_contents(last_row_with_data[index].value)
         end
 =end
-    
+
 class LearnRubySpreadsheets::SpreadSheets
 
     def initialize
         # workbook = RubyXL::Parser.parse("data/first_test_spreadsheet_data.xlsx")
         # worksheet = workbook[0]
         cylinderBook = RubyXL::Parser.parse("data/Scrubbed Data.xlsx")
+        cylinderBook.calc_pr.full_calc_on_load = true
         cylinderSheet = cylinderBook[0]
         row_size = cylinderSheet[1].size
 
@@ -75,6 +76,19 @@ class LearnRubySpreadsheets::SpreadSheets
         notes = 27
         custom_notes = 28
 
+        def make_row_blank(row)
+            row.cells.each do |cell|
+                    if cell.column == 11
+                        cell.change_contents(0, "=PRODUCT(D#{row.r}, K#{row.r})")
+                    elsif cell.column == 24
+                        #A20 contains a ., This allows for the needed periods between values in the final serial number
+                        cell.change_contents("", "=CONCATENATE(T#{row.r},A20,U#{row.r},A20,V#{row.r},W#{row.r},A20,X#{row.r})")
+                    else
+                        cell.change_contents("")
+                    end
+            end
+        end
+
         #New Plan
         # Find all lines with a cylinder and without a work order
         unnasigned_row_numbers = []
@@ -82,20 +96,36 @@ class LearnRubySpreadsheets::SpreadSheets
             break if row[workorder_number].value != nil
             unnasigned_row_numbers << row.r-1 if row[customer_or_total].value != "TOTAL #" && row[qty].value #.r is 1 indexed but the program works with a 0 index
         end
+        row_numbers = []
         grabbed_rows = []
         cylinderSheet.reverse_each do |row|
-            break if row[workorder_number].value != nil
+            break if row[workorder_number].value != nil || row[model_or_total_extended].value == "MODEL"
             grabbed_rows << row if row[customer_or_total].value != "TOTAL #" && row[qty].value #.r is 1 indexed but the program works with a 0 index
+            row_numbers << row.r
+            # make_row_blank(row)
         end
 
         # Sort all the lines (from +2 after last line with a work order number to last of last cylinder not on a work order) by date
-        grabbed_rows.sort_by {|row| row[model_or_total_extended].value}
+        grabbed_rows.sort_by! {|row| row[model_or_total_extended].value}
+        # cylinderBook.write("data/test.xlsx")
+        sorted_sheet = cylinderBook.add_worksheet("sorted_sheet")
+        cylinderBook.write("data/test.xlsx")
+
+        # grabbed_rows.each.with_index do |row, i|
+        #     binding.pry
+        #     sorted_sheet[i] = row
+        # end
         # This only sorts the rows in my local variable
         #   I need to delete the rows from the spread sheet now that they have been sorted in my variable
-        #   Then I can copy them back into the spreadsheet but sorted this time
+        # unnasigned_row_numbers.each do |row|
+        #     cylinderSheet.delete_row(row)
+        # end
         binding.pry
+        # cylinderBook.write("data/test.xlsx")
+        #   Then I can copy them back into the spreadsheet but sorted this time
+        # binding.pry
         # Start at +2 of last line with a work order number and begin tallying lines and cylinder qty per line until
-        #   15 lines, 20 cylinders, or the last line with a qty is reached 
+        #   15 lines, 20 cylinders, or the last line with a qty is reached
         #   Insert the total line and black line to use these lines as a work order
         # Sort all lines in the work order by model number
         # Insert a number of new lines equal to the number of lines in the work order
@@ -105,7 +135,7 @@ class LearnRubySpreadsheets::SpreadSheets
         # Use the model numbers to generate line numbers and U.S values
         # Display the work order to the user for verification and changes
         # Save the entire spreadsheet
-        # Copy the contents of the work order to a new spreadsheet 
+        # Copy the contents of the work order to a new spreadsheet
         # Save the new spreadsheet giving it the file name of the work order number plus the string Master
         # Open the new work order Master sheet for the user
         # Close the cylinders spreadsheet
@@ -135,7 +165,7 @@ class LearnRubySpreadsheets::SpreadSheets
 
         # #I need to target the row after the last row containing data to add the new total row
         # #and black separator line for the new work order
-        # target_row = last_row_with_data.r 
+        # target_row = last_row_with_data.r
         # cylinderSheet[target_row].cells.each.with_index do |cell, index|
         #     cell.change_contents(total_row[index].value) if index != qty && index != 10
         # end
@@ -158,12 +188,12 @@ class LearnRubySpreadsheets::SpreadSheets
         # cylinderSheet[last_row + 1].cells.each.with_index do |cell, index|
         #     cell.change_contents(cylinderSheet[last_row][index].value, cell_value.formula)
         # end
-        
-    
+
+
         #Save what I've done to a new spreadsheet called test
         #This is to preserve the original for continued testing
         ######cylinderBook.write("data/test.xlsx")
 
-       
+
     end
 end
